@@ -1,7 +1,8 @@
-import { ArrowUpRight, ChevronDown, LayoutGrid, Ruler, Mail, MessageCircle, Calculator, Check } from 'lucide-react';
+import { Mail, MessageCircle, Calculator, Check, X, Loader2, LayoutGrid, Ruler } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/sections/Footer';
 import { useState } from 'react';
+import { supabase } from '../lib/supabase';
 
 export function PricingPage() {
     // Calculator State
@@ -15,8 +16,56 @@ export function PricingPage() {
     const monthlyRate = interestRate / 100 / 12;
     const monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
 
+    // Application Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        notes: ''
+    });
+
     const formatCurrency = (val: number) => {
         return new Intl.NumberFormat('en-MW', { style: 'currency', currency: 'MWK', maximumFractionDigits: 0 }).format(val);
+    };
+
+    const handleApplyClick = () => {
+        setIsModalOpen(true);
+        setSubmitSuccess(false);
+        setErrorMessage('');
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setErrorMessage('');
+
+        try {
+            const { error } = await supabase
+                .from('applications')
+                .insert([
+                    {
+                        applicant_name: formData.name,
+                        applicant_email: formData.email,
+                        applicant_phone: formData.phone,
+                        deposit_amount: depositAmount,
+                        loan_duration_months: months,
+                        status: 'pending',
+                        notes: `Applied for financing. Price: ${price}, Deposit: ${depositPercent}%. ${formData.notes}`
+                    }
+                ]);
+
+            if (error) throw error;
+            setSubmitSuccess(true);
+        } catch (error: any) {
+            console.error('Error submitting application:', error);
+            setErrorMessage(error.message || 'Failed to submit application. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -209,13 +258,141 @@ export function PricingPage() {
                                 </div>
                             </div>
 
-                            <button className="w-full mt-8 bg-white text-black py-3 rounded font-bold hover:bg-gray-200 transition">
+                            <button
+                                onClick={handleApplyClick}
+                                className="w-full mt-8 bg-white text-black py-3 rounded font-bold hover:bg-gray-200 transition"
+                            >
                                 Apply for Finance
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
+
+            {/* Application Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-[#111111] border border-white/10 w-full max-w-lg rounded-2xl relative overflow-hidden shadow-2xl">
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+
+                        <div className="p-8">
+                            <div className="mb-6">
+                                <h3 className="text-2xl font-medium text-white mb-2">
+                                    {submitSuccess ? 'Application Received' : 'Apply for Financing'}
+                                </h3>
+                                <p className="text-gray-400 text-sm">
+                                    {submitSuccess
+                                        ? 'Thank you! Our team will review your application and contact you shortly.'
+                                        : 'Fill in your details to start your journey to owning a plot at Tiyuni Peaks.'
+                                    }
+                                </p>
+                            </div>
+
+                            {submitSuccess ? (
+                                <div className="text-center py-8">
+                                    <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <Check className="w-8 h-8 text-green-500" />
+                                    </div>
+                                    <button
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="mt-4 bg-white text-black px-6 py-2 rounded font-medium hover:bg-gray-200 transition"
+                                    >
+                                        Close
+                                    </button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleSubmit} className="space-y-4">
+                                    <div>
+                                        <label className="block text-gray-400 text-sm mb-1.5">Full Name</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg h-11 px-4 text-white focus:outline-none focus:border-orange-500/50 transition-colors"
+                                            placeholder="John Doe"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-400 text-sm mb-1.5">Email Address</label>
+                                        <input
+                                            required
+                                            type="email"
+                                            className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg h-11 px-4 text-white focus:outline-none focus:border-orange-500/50 transition-colors"
+                                            placeholder="john@example.com"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-400 text-sm mb-1.5">Phone Number</label>
+                                        <input
+                                            required
+                                            type="tel"
+                                            className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg h-11 px-4 text-white focus:outline-none focus:border-orange-500/50 transition-colors"
+                                            placeholder="+265..."
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-400 text-sm mb-1.5">Additional Notes (Optional)</label>
+                                        <textarea
+                                            className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-orange-500/50 transition-colors resize-none h-24"
+                                            placeholder="Any specific plot preferences or questions?"
+                                            value={formData.notes}
+                                            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                                        />
+                                    </div>
+
+                                    {/* Summary of Selection within Form */}
+                                    <div className="bg-[#1a1a1a] p-4 rounded-lg border border-white/5 text-sm space-y-2 mt-2">
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-500">Selected Plan</span>
+                                            <span className="text-gray-300">{formatCurrency(price)}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-500">Deposit</span>
+                                            <span className="text-gray-300">{formatCurrency(depositAmount)}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-500">Monthly</span>
+                                            <span className="text-orange-400 font-medium">{formatCurrency(monthlyPayment)}/mo</span>
+                                        </div>
+                                    </div>
+
+                                    {errorMessage && (
+                                        <div className="text-red-400 text-sm bg-red-500/10 p-3 rounded border border-red-500/20">
+                                            {errorMessage}
+                                        </div>
+                                    )}
+
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="w-full bg-white text-black h-12 rounded-lg font-bold hover:bg-gray-200 transition flex items-center justify-center gap-2 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <Loader2 className="w-5 h-5 animate-spin" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            'Submit Request'
+                                        )}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Commercial Section - Kept as is mostly */}
             <section className="py-20 max-w-7xl mx-auto px-6">

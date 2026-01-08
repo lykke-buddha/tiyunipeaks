@@ -4,10 +4,10 @@ export function PlotSection() {
     return (
         <>
             {/* Map & Invest Section */}
-            <section className="max-w-[1400px] mx-auto px-6 pb-24">
+            <section className="max-w-[1400px] mx-auto px-4 md:px-6 pb-12 lg:pb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border border-white/5 rounded-2xl overflow-hidden bg-[#0f0f0f]">
                     {/* Map Graphic Left */}
-                    <div className="relative bg-[#1a1a1a] h-[400px] lg:h-auto overflow-hidden">
+                    <div className="relative bg-[#1a1a1a] h-[300px] md:h-[400px] lg:h-auto overflow-hidden">
                         {/* Abstract Map Representation */}
                         <svg className="absolute inset-0 w-full h-full stroke-gray-600 opacity-40" xmlns="http://www.w3.org/2000/svg">
                             <defs>
@@ -23,13 +23,13 @@ export function PlotSection() {
                     </div>
 
                     {/* Content Right */}
-                    <div className="p-12 flex flex-col justify-center">
+                    <div className="p-6 md:p-12 flex flex-col justify-center">
                         <div className="flex items-center gap-2 text-red-400 mb-4">
                             <MapPin className="w-5 h-5" />
                             <span className="font-medium">Location</span>
                         </div>
-                        <h3 className="text-4xl font-semibold text-red-400 mb-6 tracking-tight">Invest in the future of <br />lifestyle in Malawi</h3>
-                        <p className="text-lg text-gray-400 mb-10 leading-relaxed">
+                        <h3 className="text-3xl md:text-4xl font-semibold text-red-400 mb-6 tracking-tight">Invest in the future of <br />lifestyle in Malawi</h3>
+                        <p className="text-base md:text-lg text-gray-400 mb-8 md:mb-10 leading-relaxed">
                             Tiyuni Peaks is open to support from diaspora, international investors, venture capital and more to develop a new standard in living, safety and community.
                         </p>
                         <div className="flex flex-wrap gap-4">

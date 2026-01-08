@@ -16,7 +16,7 @@ export function Hero() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
                 </div>
 
-                <div className="relative z-10 max-w-[1400px] mx-auto px-6 w-full pt-16">
+                <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 w-full pt-16">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export function Hero() {
                         className="max-w-2xl"
                     >
                         <p className="text-gray-400 text-lg font-medium mb-4">New Lifestyle Development</p>
-                        <h1 className="text-6xl md:text-7xl font-semibold text-white leading-[1.1] tracking-tight mb-6">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white leading-[1.1] tracking-tight mb-6">
                             <span className="text-orange-400">Buy</span> Your Future <br />
                             <span className="text-orange-400">Home</span>, Today
                         </h1>

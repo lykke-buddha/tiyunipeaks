@@ -1,4 +1,4 @@
-import { Instagram, Linkedin, Facebook, Twitter, ChevronDown, Mountain } from 'lucide-react';
+import { Instagram, Linkedin, Facebook, Twitter, ChevronDown } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/sections/Footer';
 
@@ -7,19 +7,19 @@ export function ContactPage() {
         <div className="min-h-screen bg-[#050505] text-[#9CA3AF] topographic-bg antialiased selection:bg-orange-500 selection:text-white font-sans">
             <Navbar />
 
-            <main className="relative pt-20 min-h-screen flex flex-col justify-center">
+            <main className="relative pt-24 lg:pt-32 min-h-screen flex flex-col justify-center">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2666&auto=format&fit=crop" alt="Modern Architecture" className="w-full h-full object-cover opacity-40" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/40"></div>
                 </div>
 
-                <div className="relative z-10 max-w-7xl mx-auto px-6 py-12 lg:py-20 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
+                <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6 py-12 lg:py-20 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24 items-start">
 
                     {/* Left Column: Content & Socials */}
                     <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-12">
-                        <div className="space-y-6 mt-10">
-                            <h1 className="text-5xl lg:text-6xl font-medium text-white tracking-tight">
+                        <div className="space-y-6 mt-0 lg:mt-10">
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white tracking-tight">
                                 Contact Us
                             </h1>
                             <p className="text-xl text-zinc-400 leading-relaxed max-w-md">

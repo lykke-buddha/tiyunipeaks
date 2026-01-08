@@ -40,10 +40,10 @@ export function Navbar() {
                 </div>
 
                 <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-300">
-                    <Link to="/" className={getLinkClass('/')}>Home</Link>
-                    <Link to="/#available-plots" className="hover:text-white transition">Available Plots</Link>
+                    <Link to="/home" className={getLinkClass('/home')}>Home</Link>
+                    <Link to="/home#available-plots" className="hover:text-white transition">Available Plots</Link>
                     <Link to="/pricing" className={getLinkClass('/pricing')}>Pricing and Payments</Link>
-                    <Link to="/#about" className="hover:text-white transition">About Us</Link>
+                    <Link to="/home#about" className="hover:text-white transition">About Us</Link>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -53,7 +53,7 @@ export function Navbar() {
                     >
                         Contact Us
                     </Link>
-                    <a href="http://localhost:5173" className="bg-[#1a1a1a] text-white border border-white/10 px-4 py-2 rounded text-sm font-medium hover:bg-[#252525] transition">Login to Dashboard</a>
+                    <Link to="/auth/choice" className="bg-[#1a1a1a] text-white border border-white/10 px-4 py-2 rounded text-sm font-medium hover:bg-[#252525] transition">Login</Link>
 
                     {/* Mobile Toggle */}
                     <button
@@ -75,13 +75,13 @@ export function Navbar() {
                         className="lg:hidden bg-[#050505] border-b border-white/10 overflow-hidden"
                     >
                         <div className="p-4 space-y-4 flex flex-col items-center">
-                            <Link to="/" className={isActive('/') ? "text-orange-400 text-lg font-medium" : "text-gray-300 hover:text-white text-lg font-medium"} onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-                            <Link to="/#available-plots" className="text-gray-300 hover:text-white text-lg font-medium" onClick={() => setIsMobileMenuOpen(false)}>Available Plots</Link>
+                            <Link to="/home" className={isActive('/home') ? "text-orange-400 text-lg font-medium" : "text-gray-300 hover:text-white text-lg font-medium"} onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+                            <Link to="/home#available-plots" className="text-gray-300 hover:text-white text-lg font-medium" onClick={() => setIsMobileMenuOpen(false)}>Available Plots</Link>
                             <Link to="/pricing" className={isActive('/pricing') ? "text-orange-400 text-lg font-medium" : "text-gray-300 hover:text-white text-lg font-medium"} onClick={() => setIsMobileMenuOpen(false)}>Pricing</Link>
-                            <Link to="/#about" className="text-gray-300 hover:text-white text-lg font-medium" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+                            <Link to="/home#about" className="text-gray-300 hover:text-white text-lg font-medium" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
                             <hr className="w-full border-white/10" />
                             <Link to="/contact" className={`w-full py-3 rounded font-medium text-center ${isActive('/contact') ? 'bg-zinc-200 text-black' : 'bg-white text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
-                            <a href="http://localhost:5173" className="w-full text-white border border-white/10 py-3 rounded font-medium text-center inline-block">Login</a>
+                            <Link to="/auth/choice" className="w-full text-white border border-white/10 py-3 rounded font-medium text-center inline-block" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
                         </div>
                     </motion.div>
                 )}
